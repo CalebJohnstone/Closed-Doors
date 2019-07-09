@@ -1,0 +1,87 @@
+unit Unit1;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ComCtrls;
+
+type
+  TForm1 = class(TForm)
+    btnCalculate: TButton;
+    redOut: TRichEdit;
+    procedure btnCalculateClick(Sender: TObject);
+  private
+    { Private declarations }
+    arrDoors : array[1..5] of boolean;
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.btnCalculateClick(Sender: TObject);
+var
+  k, iStudent, j : integer;
+  bDone, bNext : boolean;
+  sLine : string;
+begin
+  for k := 1 to 5 do
+    arrDoors[k] := False;//set all closed
+
+  sLine := '';
+  for k := 1 to 5 do
+    sLine := sLine+#9+'C';
+  redOut.Lines.Add(sLine);
+
+  bDone := false;
+  iStudent := 0;
+
+  while not bDone do
+  begin
+    Inc(iStudent);
+    bNext := false;
+    k :=  1;
+
+    while (not bNext) and (k < 6) do
+    begin
+      if arrDoors[k] then //open
+      begin
+        arrDoors[k] := false; //close the door
+        Inc(k);
+      end
+      else
+      begin
+        arrDoors[k] := true; //open the door
+        bNext := true;
+      end; //closed
+    end;//while not bNext
+    sLine := '';
+
+    for j := 1 to 5 do
+    begin
+      if arrDoors[j] then
+        sLine := sLine+#9+'O'
+      else
+        sLine := sLine+#9+'C';
+      end;
+      redOut.Lines.Add(sLine);
+    k := 1;
+    while (k < 6) and (not arrDoors[k]) do
+    begin
+      Inc(k);
+    end;
+
+    if k = 6 then
+      bDone := true;
+  end;//while not bDone
+
+  ShowMessage(IntToStr(iStudent)); //output the student number
+end;
+
+end.
